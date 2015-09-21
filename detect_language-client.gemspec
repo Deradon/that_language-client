@@ -9,9 +9,9 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Patrick Helm"]
   spec.email         = ["me@patrick-helm.de"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = %q{Detect language for given text.}
+  spec.description   = %q{Detect language for given text.}
+  spec.homepage      = "http://gitlab.patrick-helm.de/Ruby/detect_language-client"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
@@ -31,4 +31,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "rspec-its"
+  spec.add_development_dependency "webmock"
 end

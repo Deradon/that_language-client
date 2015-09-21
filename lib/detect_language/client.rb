@@ -1,4 +1,5 @@
 require "detect_language/client/config"
+require "detect_language/client/locale_query"
 require "detect_language/client/version"
 
 module DetectLanguage
