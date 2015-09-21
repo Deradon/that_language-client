@@ -1,11 +1,38 @@
 require 'spec_helper'
 
 describe DetectLanguage::Client do
+  subject { described_class.new(host: "foo.bar") }
+
+  its(:host) { is_expected.to eq("foo.bar") }
+
   it 'has a version number' do
     expect(DetectLanguage::Client::VERSION).not_to be nil
   end
 
-  it 'does something useful' do
-    expect(false).to eq(true)
+  describe ".current" do
+    subject { described_class.current }
+    let(:second_current_client) { described_class.current }
+
+    it { is_expected.to be_a(DetectLanguage::Client) }
+    it { is_expected.to eq(second_current_client) }
+  end
+
+  describe ".config" do
+    subject { described_class.config }
+
+    it { is_expected.to be_a(DetectLanguage::Client::Config) }
+    its(:host) { is_expected.to eq("detect-language.ruby-on-rails.guru") }
+  end
+
+  describe ".configure" do
+    subject { described_class.config }
+
+    before do
+      described_class.configure do |config|
+        config.host = "foo.bar"
+      end
+    end
+
+    its(:host) { is_expected.to eq("foo.bar") }
   end
 end
