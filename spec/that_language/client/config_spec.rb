@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe DetectLanguage::Client::Config do
+describe ThatLanguage::Client::Config do
   its(:host) { is_expected.to eq("detect-language.ruby-on-rails.guru") }
 
   describe "#host=" do

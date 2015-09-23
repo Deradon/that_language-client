@@ -1,4 +1,4 @@
-module DetectLanguage
+module ThatLanguage
   class Client
     class Config
       attr_accessor :host

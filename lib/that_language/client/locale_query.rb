@@ -1,7 +1,7 @@
 require 'json'
 require 'net/http'
 
-module DetectLanguage
+module ThatLanguage
   class Client
     class LocaleQuery
       attr_reader :text

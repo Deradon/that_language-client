@@ -1,9 +1,9 @@
-require "detect_language"
-require "detect_language/client/config"
-require "detect_language/client/locale_query"
-require "detect_language/client/version"
+require "that_language"
+require "that_language/client/config"
+require "that_language/client/locale_query"
+require "that_language/client/version"
 
-module DetectLanguage
+module ThatLanguage
   class Client
     attr_reader :host
 

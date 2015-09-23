@@ -1,17 +1,17 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'detect_language/client/version'
+require 'that_language/client/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "detect_language-client"
-  spec.version       = DetectLanguage::Client::VERSION
+  spec.name          = "that_language-client"
+  spec.version       = ThatLanguage::Client::VERSION
   spec.authors       = ["Patrick Helm"]
   spec.email         = ["me@patrick-helm.de"]
 
   spec.summary       = %q{Detect language for given text.}
   spec.description   = %q{Detect language for given text.}
-  spec.homepage      = "http://gitlab.patrick-helm.de/Ruby/detect_language-client"
+  spec.homepage      = "http://gitlab.patrick-helm.de/Ruby/that_language-client"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe DetectLanguage do
+describe ThatLanguage do
   let(:text) { "der the of" }
 
   before do
