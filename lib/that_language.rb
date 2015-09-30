@@ -1,13 +1,13 @@
 require 'that_language/client'
 
 module ThatLanguage
-  def self.locale(text)
-    ThatLanguage::Client::LocaleQuery.new(text: text).locale
+  def self.language_code(text)
+    ThatLanguage::Client::LanguageCodeQuery.new(text: text).language_code
   end
 
   def self.monkeypatch(klass)
     klass.class_eval do
-      define_method(:locale) { ThatLanguage.locale(self.to_s) }
+      define_method(:language_code) { ThatLanguage.language_code(self.to_s) }
     end
   end
 end

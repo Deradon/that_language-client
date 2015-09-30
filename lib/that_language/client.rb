@@ -1,6 +1,6 @@
 require "that_language"
 require "that_language/client/config"
-require "that_language/client/locale_query"
+require "that_language/client/language_code_query"
 require "that_language/client/version"
 
 module ThatLanguage

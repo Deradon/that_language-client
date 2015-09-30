@@ -4,13 +4,13 @@ describe ThatLanguage do
   let(:text) { "der the of" }
 
   before do
-    stub_request(:post, "http://detect-language.ruby-on-rails.guru/language")
+    stub_request(:post, "http://detect-language.ruby-on-rails.guru/language_code")
       .with(body: { "text" => "der the of" })
-      .to_return(body: '{"locale":"en","value":0.3,"score":0.2,"percentage":0.28,"hit_ratio":0.8,"hit_count":4,"words_count":5}')
+      .to_return(body: 'en')
   end
 
-  describe ".locale(text)" do
-    subject { described_class.locale(text) }
+  describe ".language_code(text)" do
+    subject { described_class.language_code(text) }
     it { is_expected.to eq("en") }
   end
 
@@ -18,9 +18,9 @@ describe ThatLanguage do
     let(:klass) { Class.new(String) }
     before { described_class.monkeypatch(klass) }
 
-    describe "<MonkeypatchedClass>#locale(text)" do
+    describe "<MonkeypatchedClass>#language_code(text)" do
       subject { klass.new(text) }
-      its(:locale) { is_expected.to eq("en") }
+      its(:language_code) { is_expected.to eq("en") }
     end
   end
 end

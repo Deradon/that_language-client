@@ -1,20 +1,20 @@
 require 'spec_helper'
 
-describe ThatLanguage::Client::LocaleQuery do
+describe ThatLanguage::Client::LanguageCodeQuery do
   subject(:query) { described_class.new(text: text, client: client) }
   let(:text) { "Just an example" }
   let(:client) { ThatLanguage::Client.new(host: "foo.bar") }
 
   its(:client) { is_expected.to eq(client) }
-  its(:url) { is_expected.to eq("http://foo.bar/locale") }
+  its(:url) { is_expected.to eq("http://foo.bar/language_code") }
 
-  describe "#locale" do
-    subject { query.locale }
+  describe "#language_code" do
+    subject { query.language_code }
 
     before do
-      stub_request(:post, "http://foo.bar/locale")
+      stub_request(:post, "http://foo.bar/language_code")
         .with(body: { "text" => "Just an example" })
-        .to_return(body: '{"locale":"en","value":0.3,"score":0.2,"percentage":0.28,"hit_ratio":0.8,"hit_count":4,"words_count":5}')
+        .to_return(body: 'en')
     end
 
     it { is_expected.to eq("en") }
