@@ -14,7 +14,10 @@ describe ThatLanguage::Client::LanguageCodeQuery do
     before do
       stub_request(:post, "http://foo.bar/language_code")
         .with(body: { "text" => "Just an example" })
-        .to_return(body: 'en')
+        .to_return(body: '{"language_code":"en"}')
+      # stub_request(:post, "http://foo.bar/language_code")
+      #   .with(body: { "text" => "Just an example" })
+      #   .to_return(body: 'en')
     end
 
     it { is_expected.to eq("en") }

@@ -12,12 +12,16 @@ module ThatLanguage
       end
 
       def language_code
-        response.body
+        json["language_code"]
       end
 
       private
 
       attr_reader :client
+
+      def json
+        @json ||= JSON.parse(response.body)
+      end
 
       def response
         @response ||= Net::HTTP.post_form(URI(url), text: text)

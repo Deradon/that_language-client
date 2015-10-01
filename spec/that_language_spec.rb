@@ -6,7 +6,7 @@ describe ThatLanguage do
   before do
     stub_request(:post, "http://detect-language.ruby-on-rails.guru/language_code")
       .with(body: { "text" => "der the of" })
-      .to_return(body: 'en')
+      .to_return(body: '{"language_code":"en"}')
   end
 
   describe ".language_code(text)" do
