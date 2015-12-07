@@ -18,7 +18,7 @@ Or install it yourself as:
 
 ## Examples
 
-```
+```ruby
 text = "This is just a random english sentence."
 
 ## == Language
