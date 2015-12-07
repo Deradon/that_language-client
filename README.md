@@ -1,4 +1,4 @@
-# DetectLanguage::Client
+# ThatLanguage::Client
 
 ## Installation
 
