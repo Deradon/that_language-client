@@ -15,16 +15,8 @@ describe ThatLanguage::Client::LanguageCodeQuery do
       stub_request(:post, "http://foo.bar/language_code")
         .with(body: { "text" => "Just an example" })
         .to_return(body: '{"language_code":"en"}')
-      # stub_request(:post, "http://foo.bar/language_code")
-      #   .with(body: { "text" => "Just an example" })
-      #   .to_return(body: 'en')
     end
 
     it { is_expected.to eq("en") }
-  end
-
-  context "when initialized without a client" do
-    subject { described_class.new(text: text) }
-    its(:client) { is_expected.to eq(ThatLanguage::Client.current) }
   end
 end
