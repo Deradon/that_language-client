@@ -110,6 +110,16 @@ text = "This is just a random english sentence."
   # }
 ```
 
+## Configure
+
+Configure the host to use:
+
+```ruby
+ThatLanguage::Client.configure do |config|
+  config.host = "my-custom-that-language-api.com"
+end
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies.
