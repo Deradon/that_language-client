@@ -5,7 +5,7 @@
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'detect_language-client'
+gem 'that_language-client'
 ```
 
 And then execute:
@@ -14,7 +14,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install detect_language-client
+    $ gem install that_language-client
 
 ## Examples
 

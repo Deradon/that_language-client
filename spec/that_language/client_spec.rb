@@ -21,7 +21,7 @@ describe ThatLanguage::Client do
     subject { described_class.config }
 
     it { is_expected.to be_a(ThatLanguage::Client::Config) }
-    its(:host) { is_expected.to eq("detect-language.ruby-on-rails.guru") }
+    its(:host) { is_expected.to eq("that-language-api.ruby-on-rails.guru") }
   end
 
   describe ".configure" do
@@ -30,6 +30,12 @@ describe ThatLanguage::Client do
     before do
       described_class.configure do |config|
         config.host = "foo.bar"
+      end
+    end
+
+    after do
+      described_class.configure do |config|
+        config.host = "that-language-api.ruby-on-rails.guru"
       end
     end
 

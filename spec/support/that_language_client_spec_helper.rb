@@ -6,7 +6,7 @@ module ThatLanguageClientSpecHelper
   module ClassMethods
     def setup_stubbed_requests
       before do
-        base_url = "http://detect-language.ruby-on-rails.guru"
+        base_url = "http://that-language-api.ruby-on-rails.guru"
         request_body = { "text" => "der the of" }
         details_body = <<-JSON
 {
