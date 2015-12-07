@@ -9,9 +9,9 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Patrick Helm"]
   spec.email         = ["me@patrick-helm.de"]
 
-  spec.summary       = %q{Detect language for given text.}
-  spec.description   = %q{Detect language for given text.}
-  spec.homepage      = "http://gitlab.patrick-helm.de/Ruby/that_language-client"
+  spec.summary       = %q{API client for ThatLanguage.}
+  # spec.description   = %q{Detect language for given text.}
+  spec.homepage      = "https://github.com/Deradon/that_language-client"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
