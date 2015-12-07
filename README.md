@@ -108,6 +108,17 @@ text = "This is just a random english sentence."
   #     # ...
   #   ]
   # }
+
+## == Available
+
+  ThatLanguage.available
+  # { "de" => "German", "en" => "English", ... }
+
+  ThatLanguage.available_languages
+  # ["German", "English", ...]
+
+  ThatLanguage.available_language_codes
+  # ["de", "en", ...]
 ```
 
 ## Configure

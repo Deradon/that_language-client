@@ -45,6 +45,27 @@ describe ThatLanguage do
     end
   end
 
+  describe ".available" do
+    subject { described_class.available }
+
+    it { is_expected.to include("de" => "German") }
+    it { is_expected.to include("en" => "English") }
+  end
+
+  describe ".available_languages" do
+    subject { described_class.available_languages }
+
+    it { is_expected.to include("English") }
+    it { is_expected.to include("German") }
+  end
+
+  describe ".available_language_codes" do
+    subject { described_class.available_language_codes }
+
+    it { is_expected.to include("de") }
+    it { is_expected.to include("en") }
+  end
+
   describe ".monkeypatch(klass)" do
     let(:klass) { Class.new(String) }
     before { described_class.monkeypatch(klass) }

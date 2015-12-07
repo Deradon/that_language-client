@@ -16,6 +16,14 @@ module ThatLanguageClientSpecHelper
   ]
 }
 JSON
+        available_body = <<-JSON
+{
+  "available": {
+    "de": "German",
+    "en": "English"
+  }
+}
+JSON
 
         stub_request(:post, "#{base_url}/language_code")
           .with(body: request_body)
@@ -32,6 +40,10 @@ JSON
         stub_request(:post, "#{base_url}/details")
           .with(body: request_body)
           .to_return(body: details_body)
+
+        stub_request(:post, "#{base_url}/available")
+          .with(body: { "text" => "" })
+          .to_return(body: available_body)
       end
     end
   end
