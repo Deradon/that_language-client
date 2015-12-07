@@ -9,6 +9,10 @@ module ThatLanguage
     ThatLanguage::Client::LanguageCodeQuery.new(text: text).language_code
   end
 
+  def self.detect(text)
+    ThatLanguage::Client::DetectQuery.new(text: text)
+  end
+
   def self.monkeypatch(klass)
     klass.class_eval do
       define_method(:language_code) { ThatLanguage.language_code(self.to_s) }

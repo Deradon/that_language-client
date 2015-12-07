@@ -9,8 +9,8 @@ module ThatLanguage
 
       private
 
-      def url
-        "http://#{client.host}/language_code"
+      def endpoint
+        "/language_code"
       end
     end
   end

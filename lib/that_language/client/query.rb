@@ -11,10 +11,6 @@ module ThatLanguage
         @client = client
       end
 
-      def language_code
-        json["language_code"]
-      end
-
       private
 
       attr_reader :client
@@ -27,9 +23,13 @@ module ThatLanguage
         @response ||= Net::HTTP.post_form(URI(url), text: text)
       end
 
-      # def url
-      #   "http://#{client.host}/language_code"
-      # end
+      def url
+        "http://#{client.host}#{endpoint}"
+      end
+
+      def endpoint
+        fail NotImplementedError
+      end
     end
   end
 end

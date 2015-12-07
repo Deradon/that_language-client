@@ -1,9 +1,6 @@
 require 'spec_helper'
-require 'support/that_language_client_spec_helper'
 
 describe ThatLanguage do
-  include ThatLanguageClientSpecHelper
-
   setup_stubbed_requests
 
   let(:text) { "der the of" }
@@ -16,6 +13,14 @@ describe ThatLanguage do
   describe ".language_code(text)" do
     subject { described_class.language_code(text) }
     it { is_expected.to eq("en") }
+  end
+
+  describe ".detect(text)" do
+    subject { described_class.detect(text) }
+
+    its(:language) { is_expected.to eq("English") }
+    its(:language_code) { is_expected.to eq("en") }
+    its(:confidence) { is_expected.to eq(0.8) }
   end
 
   describe ".monkeypatch(klass)" do

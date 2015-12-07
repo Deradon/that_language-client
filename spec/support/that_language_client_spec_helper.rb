@@ -16,6 +16,10 @@ module ThatLanguageClientSpecHelper
         stub_request(:post, "#{base_url}/language")
           .with(body: body)
           .to_return(body: '{"language":"English"}')
+
+        stub_request(:post, "#{base_url}/detect")
+          .with(body: body)
+          .to_return(body: '{"language":"English","language_code":"en","confidence":0.8}')
       end
     end
   end
