@@ -1,12 +1,16 @@
 require 'spec_helper'
+require 'support/that_language_client_spec_helper'
 
 describe ThatLanguage do
+  include ThatLanguageClientSpecHelper
+
+  setup_stubbed_requests
+
   let(:text) { "der the of" }
 
-  before do
-    stub_request(:post, "http://detect-language.ruby-on-rails.guru/language_code")
-      .with(body: { "text" => "der the of" })
-      .to_return(body: '{"language_code":"en"}')
+  describe ".language(text)" do
+    subject { described_class.language(text) }
+    it { is_expected.to eq("English") }
   end
 
   describe ".language_code(text)" do
