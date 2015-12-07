@@ -23,6 +23,28 @@ describe ThatLanguage do
     its(:confidence) { is_expected.to eq(0.8) }
   end
 
+  describe ".details(text)" do
+    subject(:query) { described_class.details(text) }
+
+    it { is_expected.to be_a(ThatLanguage::Client::DetailsQuery) }
+
+    describe "#winner" do
+      subject { query.winner }
+      its(:language) { is_expected.to eq("English") }
+    end
+
+    describe "#results" do
+      subject { query.results }
+      its(:length) { is_expected.to eq(2) }
+    end
+
+    describe "#to_h" do
+      subject { query.to_h }
+      it { is_expected.to be_a(Hash) }
+      it { is_expected.to include("results") }
+    end
+  end
+
   describe ".monkeypatch(klass)" do
     let(:klass) { Class.new(String) }
     before { described_class.monkeypatch(klass) }

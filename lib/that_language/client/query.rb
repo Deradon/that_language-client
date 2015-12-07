@@ -11,6 +11,10 @@ module ThatLanguage
         @client = client
       end
 
+      def to_h
+        json
+      end
+
       private
 
       attr_reader :client
