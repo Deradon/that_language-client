@@ -44,6 +44,10 @@ JSON
         stub_request(:post, "#{base_url}/available")
           .with(body: { "text" => "" })
           .to_return(body: available_body)
+
+        stub_request(:post, "#{base_url}/version")
+          .with(body: { "text" => "" })
+          .to_return(body: '{"version":"42"}')
       end
     end
   end

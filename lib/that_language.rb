@@ -29,6 +29,10 @@ module ThatLanguage
     available.keys
   end
 
+  def self.api_version
+    ThatLanguage::Client::VersionQuery.new.version
+  end
+
   def self.monkeypatch(klass)
     klass.class_eval do
       define_method(:language_code) { ThatLanguage.language_code(self.to_s) }
