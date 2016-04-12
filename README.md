@@ -112,13 +112,18 @@ text = "This is just a random english sentence."
 ## == Available
 
   ThatLanguage.available
-  # { "de" => "German", "en" => "English", ... }
+  # => { "de" => "German", "en" => "English", ... }
 
   ThatLanguage.available_languages
-  # ["German", "English", ...]
+  # => ["German", "English", ...]
 
   ThatLanguage.available_language_codes
-  # ["de", "en", ...]
+  # => ["de", "en", ...]
+
+## == API Version
+
+  ThatLanguage.api_version
+  # => "42"
 ```
 
 ## Configure
@@ -152,4 +157,3 @@ and contributors are expected to adhere to the [Contributor Covenant](http://con
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-

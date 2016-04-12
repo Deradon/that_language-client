@@ -6,6 +6,7 @@ require "that_language/client/details_query"
 require "that_language/client/detect_query"
 require "that_language/client/language_code_query"
 require "that_language/client/language_query"
+require "that_language/client/version_query"
 
 require "that_language/client/version"
 

@@ -66,6 +66,12 @@ describe ThatLanguage do
     it { is_expected.to include("en") }
   end
 
+  describe ".api_version" do
+    subject { described_class.api_version }
+
+    it { is_expected.to eq("42") }
+  end
+
   describe ".monkeypatch(klass)" do
     let(:klass) { Class.new(String) }
     before { described_class.monkeypatch(klass) }
