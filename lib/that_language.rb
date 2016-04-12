@@ -17,6 +17,18 @@ module ThatLanguage
     ThatLanguage::Client::DetailsQuery.new(text: text)
   end
 
+  def self.available
+    ThatLanguage::Client::AvailableQuery.new.available
+  end
+
+  def self.available_languages
+    available.values
+  end
+
+  def self.available_language_codes
+    available.keys
+  end
+
   def self.monkeypatch(klass)
     klass.class_eval do
       define_method(:language_code) { ThatLanguage.language_code(self.to_s) }
