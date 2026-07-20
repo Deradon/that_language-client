@@ -1,3 +1,5 @@
+[![CI](https://github.com/Deradon/that_language-client/actions/workflows/ci.yml/badge.svg)](https://github.com/Deradon/that_language-client/actions/workflows/ci.yml)
+
 # ThatLanguage::Client
 
 A drop-in replacement for the [`that_language`][core] gem that answers each call
