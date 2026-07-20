@@ -18,12 +18,15 @@ wordlists in your process and no cold-start cost.
 gem 'that_language-client'
 ```
 
-Note that the published 0.1.2 predates this revision. Until a new version is
-released, point at the repository:
+Requires Ruby 3.1 or later.
 
-```ruby
-gem 'that_language-client', git: 'https://github.com/Deradon/that_language-client.git'
-```
+> **Upgrading from 0.1.2?** Return types changed. This gem is meant to be a
+> drop-in replacement for [`that_language`][core], and it was not: language
+> *names* are symbols and language *codes* are strings in the core gem, but
+> 0.1.2 returned strings throughout and left `available_languages` unsorted.
+> Seven of fourteen public methods were affected. If your code compares those
+> results against strings, it needs updating. `to_h` still returns the raw
+> wire format.
 
 ## You need a service to talk to
 
