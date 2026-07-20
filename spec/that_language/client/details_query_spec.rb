@@ -6,10 +6,7 @@ describe ThatLanguage::Client::DetailsQuery do
 
   setup_stubbed_requests
 
-  # endpoint is private; rspec-its 2.0 resolves the subject with public_send.
-  it "targets /details" do
-    expect(query.send(:endpoint)).to eq("/details")
-  end
+  it_behaves_like "a query targeting", "/details"
 
   describe "#results" do
     subject(:results) { query.results }

@@ -6,9 +6,6 @@ describe ThatLanguage::Client::LanguageQuery do
 
   setup_stubbed_requests
 
-  # endpoint is private; rspec-its 2.0 resolves the subject with public_send.
-  it "targets /language" do
-    expect(query.send(:endpoint)).to eq("/language")
-  end
+  it_behaves_like "a query targeting", "/language"
   its(:language) { is_expected.to eq(:English) }
 end

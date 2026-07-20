@@ -5,9 +5,6 @@ describe ThatLanguage::Client::VersionQuery do
 
   setup_stubbed_requests
 
-  # endpoint is private; rspec-its 2.0 resolves the subject with public_send.
-  it "targets /version" do
-    expect(query.send(:endpoint)).to eq("/version")
-  end
+  it_behaves_like "a query targeting", "/version"
   its(:version) { is_expected.to eq("42") }
 end

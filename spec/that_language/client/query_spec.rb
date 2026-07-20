@@ -5,17 +5,16 @@ describe ThatLanguage::Client::Query do
   let(:text) { "Just an example" }
   let(:client) { ThatLanguage::Client.new(host: "foo.bar") }
 
-  # client is a private reader; rspec-its 2.0 resolves the subject with
-  # public_send, so it is reached explicitly here.
-  it "keeps the client it was given" do
-    expect(query.send(:client)).to eq(client)
+  context "when given a client" do
+    let(:expected_client) { client }
+
+    it_behaves_like "a query using client", "the client it was given"
   end
 
   context "when initialized without a client" do
     subject(:query) { described_class.new(text: text) }
+    let(:expected_client) { ThatLanguage::Client.current }
 
-    it "falls back to the current client" do
-      expect(query.send(:client)).to eq(ThatLanguage::Client.current)
-    end
+    it_behaves_like "a query using client", "the current client"
   end
 end

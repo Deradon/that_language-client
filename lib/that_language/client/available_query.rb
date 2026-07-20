@@ -8,11 +8,11 @@ module ThatLanguage
         super(text: "", client: client)
       end
 
-      # The core gem keys this hash by symbol and values it with symbols too
-      # (`{ak: :Akan}`). JSON gives strings for both. See
-      # LanguageQuery#language.
+      # The exception to the rule in Query#language_name: this hash is keyed by
+      # symbol in the core gem (`{ak: :Akan}`), so the *code* is a symbol here
+      # even though language_code(text) returns a string.
       def available
-        @available ||= json["available"].to_h { |code, name| [code.to_sym, name.to_sym] }
+        @available ||= json["available"].to_h { |code, name| [code.to_sym, language_name(name)] }
       end
 
       private

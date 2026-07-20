@@ -19,6 +19,15 @@ module ThatLanguage
 
       attr_reader :client
 
+      # The core gem returns language *names* as symbols and language *codes*
+      # as strings. JSON has neither, so every name crossing this boundary is
+      # converted back -- without it this gem is not the drop-in replacement it
+      # claims to be. Every subclass that surfaces a language name goes through
+      # here, so the rule is stated once.
+      def language_name(value)
+        value&.to_sym
+      end
+
       def json
         @json ||= JSON.parse(response.body)
       end

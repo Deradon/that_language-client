@@ -6,10 +6,7 @@ describe ThatLanguage::Client::DetectQuery do
 
   setup_stubbed_requests
 
-  # endpoint is private; rspec-its 2.0 resolves the subject with public_send.
-  it "targets /detect" do
-    expect(query.send(:endpoint)).to eq("/detect")
-  end
+  it_behaves_like "a query targeting", "/detect"
   its(:language) { is_expected.to eq(:English) }
   its(:language_code) { is_expected.to eq("en") }
   its(:confidence) { is_expected.to eq(0.8) }

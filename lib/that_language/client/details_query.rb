@@ -11,9 +11,7 @@ module ThatLanguage
 
       def results
         @results ||= json["results"].map do |result|
-          # Symbol language name, string language code -- see
-          # LanguageQuery#language for why the conversion happens here.
-          OpenStruct.new(result.merge("language" => result["language"]&.to_sym))
+          OpenStruct.new(result.merge("language" => language_name(result["language"])))
         end
       end
 
