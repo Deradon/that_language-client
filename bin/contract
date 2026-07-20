@@ -38,12 +38,30 @@ SERVICE_PID=""
 
 cleanup() {
   if [ -n "${SERVICE_PID}" ]; then
+    # Children first. `bundle exec` does not reliably replace itself with puma,
+    # so signalling only SERVICE_PID can reap the wrapper and orphan the server
+    # -- which leaves the port bound after this script exits. That is not a
+    # tidiness problem: the next run then polls a stale service and compares
+    # against whatever code *it* was started with, silently. Found exactly that
+    # way on 2026-07-20.
+    pkill -P "${SERVICE_PID}" 2>/dev/null || true
     kill "${SERVICE_PID}" 2>/dev/null || true
     wait "${SERVICE_PID}" 2>/dev/null || true
   fi
   rm -rf "${WORK}"
 }
 trap cleanup EXIT
+
+# Refuse to run against a port we do not own. The readiness poll below cannot
+# tell our service from someone else's, so without this check an occupied port
+# turns the whole run into a test of an unrelated process -- passing or failing
+# for reasons that have nothing to do with this working tree.
+if curl -fsS -o /dev/null "${BASE}/version" 2>/dev/null; then
+  echo "something is already listening on ${BASE} -- refusing to run." >&2
+  echo "The probes would compare against that process, not this working tree." >&2
+  echo "Stop it, or pass a different port: bin/contract 4600" >&2
+  exit 1
+fi
 
 # --- 1. Three isolated bundles ----------------------------------------------
 #
