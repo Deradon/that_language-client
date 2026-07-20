@@ -45,10 +45,20 @@ probe.call("detect.language", detected.language)
 probe.call("detect.language_code", detected.language_code)
 probe.call("detect.confidence", detected.confidence)
 
-winner = ThatLanguage.details(TEXT).winner
+details = ThatLanguage.details(TEXT)
+
+winner = details.winner
 %i[language language_code confidence value hit_ratio hit_count words_count].each do |attribute|
   probe.call("details.winner.#{attribute}", winner.public_send(attribute))
 end
+
+# Ranking is part of the contract, not just the winner. The core gem returns
+# results sorted descending by value; if the client ever reverts to trusting the
+# order the service happened to send, these lines are what notices.
+results = details.results
+probe.call("details.results.size", results.size)
+probe.call("details.results.language_codes", results.map(&:language_code))
+probe.call("details.results.descending_by_value?", results.map(&:value) == results.map(&:value).sort.reverse)
 
 available = ThatLanguage.available
 probe.call("available.size", available.size)

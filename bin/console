@@ -1,12 +1,24 @@
 #!/usr/bin/env ruby
 
 require "bundler/setup"
-require "detect_language/client"
+require "that_language"
 
 # You can add fixtures and/or initialization code here to make experimenting
 # with your gem easier. You can also use a different console, if you like.
 
-# (If you use this, don't forget to add pry to your Gemfile!)
+# Every call here is an HTTP request to a that_language-service instance. The
+# default host is localhost:4567, so `docker run -p 4567:4567
+# that_language-service` and this console compose with no configuration:
+#
+#   ThatLanguage.language("Guten Tag")   # => :German
+#
+# Point it somewhere else with:
+#
+#   ThatLanguage::Client.configure { |config| config.host = "https://example.com" }
+#
+# Client.current memoises on first use, so configure before the first query.
+
+# pry is already a development dependency, so this needs no Gemfile change:
 # require "pry"
 # Pry.start
 

@@ -12,9 +12,11 @@ Developed on Ruby 4.0.6 (`.tool-versions`); supports 3.1 and up.
 bundle install
 bundle exec rspec       # 56 examples, 0 failures
 bundle exec rubocop
+bin/contract            # 21 probes, this gem vs the core gem
 ```
 
-The specs stub HTTP with webmock and never touch the network.
+The specs stub HTTP with webmock and never touch the network. `bin/contract` is
+the one that does — see below.
 
 ## Hard constraints
 
@@ -36,15 +38,35 @@ stubs asserted whatever the code already did, so they were green against a
 client that did not match the gem it replaces.
 
 If you change anything on the JSON boundary, verify against a real service
-rather than the stubs:
+rather than the stubs. That is what `bin/contract` does, and it is wired into CI
+as its own job:
 
 ```sh
-docker run -p 4567:4567 that_language-service    # from that_language-docker
+bin/contract
 ```
 
-Then call every public method and compare the *types* against the core gem. The
-two gems both define `ThatLanguage` and cannot be loaded into one process, so
-this is two processes producing comparable output and a diff.
+It starts a `that_language-service` from the published gem, runs
+`contract/probe.rb` under two `BUNDLE_GEMFILE`s — the core gem, and this working
+tree — and diffs the output. The two gems both define `ThatLanguage` and cannot
+be loaded into one process, which is why it is two processes and a diff rather
+than one shared suite.
+
+Things worth knowing before you touch it:
+
+- The probe emits `value.inspect`, so `:German` and `"German"` differ as plain
+  text. That is the type assertion; there is no type-checking code.
+- `contract/gemfiles/client.gemfile` resolves this gem from the working tree, not
+  from rubygems. From rubygems it would test the last release and pass on a
+  branch that reintroduces the drift.
+- `api_version` is excluded by construction — the probe only calls methods the
+  core gem has, so there is no exclusion list to maintain. Adding a client-only
+  method needs no change here.
+- `details.winner` is compared by value, not class: this gem returns an
+  `OpenStruct` where the core gem returns a `ThatLanguage::Result`. That is the
+  open TODO, not drift.
+- The job goes red when the **core gem or the service** changes, not only this
+  repository. That is the point of a contract test, but it is why a red badge
+  here is not always a bug here.
 
 ## Conventions
 
