@@ -1,0 +1,6 @@
+# The core gem, from rubygems. This is the reference implementation: whatever it
+# returns *is* the contract, so this side is deliberately the published release
+# rather than a checkout.
+source "https://rubygems.org"
+
+gem "that_language", "~> 0.2"

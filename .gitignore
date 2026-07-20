@@ -7,3 +7,6 @@
 /pkg/
 /spec/reports/
 /tmp/
+
+# Resolved fresh by bin/contract against the ~> 0.2 pins; not committed.
+contract/gemfiles/*.lock

@@ -1,0 +1,8 @@
+# This gem, from the working tree -- NOT from rubygems.
+#
+# The whole point is to test the code in the branch under CI. Resolving
+# that_language-client from rubygems would test the last release instead, and
+# would therefore pass on a pull request that reintroduces the drift.
+source "https://rubygems.org"
+
+gemspec path: "../.."

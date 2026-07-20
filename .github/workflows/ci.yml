@@ -23,6 +23,28 @@ jobs:
           bundler-cache: true
       - run: bundle exec rspec
 
+  contract:
+    name: contract (client vs the core gem)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "4.0"
+          bundler-cache: true
+
+      # Every assertion lives in bin/contract so it is runnable locally against
+      # the same gems, rather than only reproducible by pushing.
+      #
+      # This job starts a real that_language-service and compares this client
+      # against the core gem. It therefore goes red when *the core gem or the
+      # service* changes, not only when this repository does -- which is the
+      # entire point of a contract test, but is worth knowing before it happens.
+      # The rspec job above is webmock-stubbed and stayed green through a decade
+      # of real drift; this job is the one that would not have.
+      - name: Contract
+        run: ./bin/contract
+
   rubocop:
     name: rubocop
     runs-on: ubuntu-latest

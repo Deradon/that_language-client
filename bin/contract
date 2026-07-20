@@ -1,0 +1,121 @@
+#!/usr/bin/env bash
+#
+# Contract test: this client against the core that_language gem.
+#
+#   bin/contract [port]
+#
+# The client claims to be a drop-in replacement for that_language. This checks
+# that it still is, by starting a real service, running the same probe against
+# both implementations in separate processes, and diffing the output.
+#
+# Why it is shaped this way, since none of it is arbitrary:
+#
+#   - Two processes, because both gems define the ThatLanguage module and
+#     cannot be loaded into one. Isolation is per-process BUNDLE_GEMFILE.
+#
+#   - A real service rather than webmock, because the stubbed suite is exactly
+#     what failed. The client's return types had drifted from the core gem's
+#     since 2016 and 56 green stubbed examples never noticed, because the stubs
+#     asserted what the code already did. Stubs written from the implementation
+#     test that the implementation is itself.
+#
+#   - No Docker. that_language-service is on rubygems and ships a config.ru, so
+#     the service can be started directly. Nothing is pushed to a registry, so
+#     a container here would mean building an image from another repository.
+#
+# Assertions live in this script rather than inline in the workflow so a failure
+# reproduces locally instead of only by pushing.
+
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+PORT="${1:-4567}"
+BASE="http://127.0.0.1:${PORT}"
+GEMFILES="contract/gemfiles"
+WORK="$(mktemp -d)"
+SERVICE_PID=""
+
+cleanup() {
+  if [ -n "${SERVICE_PID}" ]; then
+    kill "${SERVICE_PID}" 2>/dev/null || true
+    wait "${SERVICE_PID}" 2>/dev/null || true
+  fi
+  rm -rf "${WORK}"
+}
+trap cleanup EXIT
+
+# --- 1. Three isolated bundles ----------------------------------------------
+#
+# core and service come from rubygems; the client comes from this working tree.
+# That last one is load-bearing: resolving the client from rubygems would test
+# the last release rather than the branch, so a pull request reintroducing the
+# drift would pass.
+echo "bundles"
+for gemfile in core client service; do
+  BUNDLE_GEMFILE="${GEMFILES}/${gemfile}.gemfile" bundle install --quiet
+  echo "  ok    ${gemfile}"
+done
+
+# --- 2. Start the service ---------------------------------------------------
+#
+# APP_ENV=production is pinned deliberately. Sinatra 4's
+# Rack::Protection::HostAuthorization allow-lists localhost only in the
+# development environment; production applies no allow-list. The deployed image
+# pins this for the same reason and a hand-rolled boot must not forget it.
+echo "service"
+BUNDLE_GEMFILE="${GEMFILES}/service.gemfile" \
+  APP_ENV=production RACK_ENV=production \
+  bundle exec puma --bind "tcp://127.0.0.1:${PORT}" contract/config.ru \
+  >"${WORK}/service.log" 2>&1 &
+SERVICE_PID=$!
+
+# config.ru warms the wordlist cache before puma binds, so a service that
+# answers at all is warm. Poll rather than sleep -- the warm-up is ~0.9 s but
+# bundler and boot are not, and a fixed sleep is either flaky or slow.
+for _ in $(seq 1 60); do
+  if curl -fsS -o /dev/null "${BASE}/version" 2>/dev/null; then break; fi
+  if ! kill -0 "${SERVICE_PID}" 2>/dev/null; then
+    echo "service exited during boot:" >&2
+    cat "${WORK}/service.log" >&2
+    exit 1
+  fi
+  sleep 1
+done
+
+if ! curl -fsS -o /dev/null "${BASE}/version"; then
+  echo "service never answered on ${BASE}/version:" >&2
+  cat "${WORK}/service.log" >&2
+  exit 1
+fi
+echo "  ok    answers on ${BASE}/version"
+
+# --- 3. Probe both implementations ------------------------------------------
+echo "probes"
+BUNDLE_GEMFILE="${GEMFILES}/core.gemfile" \
+  bundle exec ruby contract/probe.rb >"${WORK}/core.txt"
+echo "  ok    core gem"
+
+# The client reads its host from Client.configure, and memoises Client.current
+# on first use -- so this has to be set before any query runs. Passing it as a
+# preload keeps probe.rb free of client-only configuration, which the core gem
+# would not understand.
+cat >"${WORK}/configure_client.rb" <<RUBY
+require "that_language"
+ThatLanguage::Client.configure { |config| config.host = "127.0.0.1:${PORT}" }
+RUBY
+
+BUNDLE_GEMFILE="${GEMFILES}/client.gemfile" \
+  bundle exec ruby -r"${WORK}/configure_client.rb" contract/probe.rb >"${WORK}/client.txt"
+echo "  ok    client"
+
+# --- 4. The diff is the assertion -------------------------------------------
+echo
+if diff -u --label "core gem" --label "client" "${WORK}/core.txt" "${WORK}/client.txt"; then
+  echo "contract holds: $(wc -l <"${WORK}/core.txt" | tr -d ' ') probes identical"
+else
+  echo
+  echo "CONTRACT VIOLATED -- the client does not match the core gem." >&2
+  echo "Language names must be symbols, language codes must be strings." >&2
+  exit 1
+fi

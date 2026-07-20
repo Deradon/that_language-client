@@ -1,0 +1,15 @@
+# The service the client talks to.
+#
+# that_language-service's gemspec pins that_language ~> 0.2, and gemspec
+# dependencies are transitive, so the core gem arrives on its own without being
+# named here.
+#
+# It declares no web server on purpose -- it is a library, and the deployment
+# picks the server. puma and rackup below are that pick, matching what the
+# deployed image runs. (Gems are alphabetical because rubocop's
+# Bundler/OrderedGems says so, not because the order means anything.)
+source "https://rubygems.org"
+
+gem "puma", "~> 7.0"
+gem "rackup", "~> 2.2"
+gem "that_language-service", "~> 0.2"
