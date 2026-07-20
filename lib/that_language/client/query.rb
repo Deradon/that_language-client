@@ -28,7 +28,7 @@ module ThatLanguage
       end
 
       def url
-        "http://#{client.host}#{endpoint}"
+        "#{client.base_url}#{endpoint}"
       end
 
       def endpoint

@@ -21,12 +21,15 @@ module ThatLanguage
     ThatLanguage::Client::AvailableQuery.new.available
   end
 
+  # Sorted, to match the core gem. The service happens to return codes in
+  # order, so only the names were visibly unsorted -- but relying on the
+  # server's ordering is exactly how the two implementations drift.
   def self.available_languages
-    available.values
+    available.values.sort
   end
 
   def self.available_language_codes
-    available.keys
+    available.keys.sort
   end
 
   def self.api_version

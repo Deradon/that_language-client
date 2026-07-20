@@ -6,7 +6,10 @@ describe ThatLanguage::Client::DetailsQuery do
 
   setup_stubbed_requests
 
-  its(:endpoint) { is_expected.to eq("/details") }
+  # endpoint is private; rspec-its 2.0 resolves the subject with public_send.
+  it "targets /details" do
+    expect(query.send(:endpoint)).to eq("/details")
+  end
 
   describe "#results" do
     subject(:results) { query.results }
@@ -23,7 +26,7 @@ describe ThatLanguage::Client::DetailsQuery do
   describe "#winner" do
     subject { query.winner }
 
-    its(:language) { is_expected.to eq("English") }
+    its(:language) { is_expected.to eq(:English) }
     its(:language_code) { is_expected.to eq("en") }
     its(:confidence) { is_expected.to eq(0.8) }
     its(:value) { is_expected.to eq(2.0) }
@@ -38,14 +41,14 @@ describe ThatLanguage::Client::DetailsQuery do
     specify do
       expect(subject).to eq({
         "results" => [
-           {
-             "language" => "English",
-             "language_code" => "en",
-             "confidence" => 0.8,
-             "value" => 2.0,
-             "hit_ratio" => 1.0,
-             "hit_count" => 2,
-             "words_count" => 2
+          {
+            "language" => "English",
+            "language_code" => "en",
+            "confidence" => 0.8,
+            "value" => 2.0,
+            "hit_ratio" => 1.0,
+            "hit_count" => 2,
+            "words_count" => 2
           },
           {
             "language" => "German",

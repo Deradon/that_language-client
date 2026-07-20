@@ -7,7 +7,7 @@ describe ThatLanguage do
 
   describe ".language(text)" do
     subject { described_class.language(text) }
-    it { is_expected.to eq("English") }
+    it { is_expected.to eq(:English) }
   end
 
   describe ".language_code(text)" do
@@ -18,7 +18,7 @@ describe ThatLanguage do
   describe ".detect(text)" do
     subject { described_class.detect(text) }
 
-    its(:language) { is_expected.to eq("English") }
+    its(:language) { is_expected.to eq(:English) }
     its(:language_code) { is_expected.to eq("en") }
     its(:confidence) { is_expected.to eq(0.8) }
   end
@@ -30,7 +30,7 @@ describe ThatLanguage do
 
     describe "#winner" do
       subject { query.winner }
-      its(:language) { is_expected.to eq("English") }
+      its(:language) { is_expected.to eq(:English) }
     end
 
     describe "#results" do
@@ -48,22 +48,22 @@ describe ThatLanguage do
   describe ".available" do
     subject { described_class.available }
 
-    it { is_expected.to include("de" => "German") }
-    it { is_expected.to include("en" => "English") }
+    it { is_expected.to include(de: :German) }
+    it { is_expected.to include(en: :English) }
   end
 
   describe ".available_languages" do
     subject { described_class.available_languages }
 
-    it { is_expected.to include("English") }
-    it { is_expected.to include("German") }
+    it { is_expected.to include(:English) }
+    it { is_expected.to include(:German) }
   end
 
   describe ".available_language_codes" do
     subject { described_class.available_language_codes }
 
-    it { is_expected.to include("de") }
-    it { is_expected.to include("en") }
+    it { is_expected.to include(:de) }
+    it { is_expected.to include(:en) }
   end
 
   describe ".api_version" do

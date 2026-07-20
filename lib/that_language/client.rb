@@ -18,6 +18,16 @@ module ThatLanguage
       @host = host
     end
 
+    # `host` may be a bare "example.com", a "host:port", or a full base URL
+    # carrying a scheme. Anything without a scheme is assumed to be http, which
+    # is what this client always did; https is now expressible, and any real
+    # deployment will need it.
+    def base_url
+      return host.sub(%r{/+\z}, "") if host.include?("://")
+
+      "http://#{host}"
+    end
+
     def self.current
       @current ||= Client.new(host: config.host)
     end

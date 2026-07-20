@@ -3,8 +3,9 @@ require "that_language/client/query"
 module ThatLanguage
   class Client
     class DetectQuery < Query
+      # Symbol, to match the core gem. See LanguageQuery#language.
       def language
-        json["language"]
+        json["language"]&.to_sym
       end
 
       def language_code
